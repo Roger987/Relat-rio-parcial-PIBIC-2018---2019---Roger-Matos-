@@ -7,6 +7,7 @@
 \usepackage{amsthm,amsfonts,amssymb}
 \usepackage{enumitem}
 \usepackage{tabularx}
+\usepackage{siunitx}
 
 \usepackage{ragged2e}
 \usepackage{times}
@@ -152,8 +153,12 @@ Os algoritmos citados são implementações desses quatro métodos. Sua implemen
 
 Até o presente já foram implementadas dessa forma duas das quatro técnicas de imputação, a Complete Case e a Time Ordered. \\
 Para se testar a velocidade e acurácia das versões em C, foram executadas diversas vezes as versões em ambas as linguagens a partir das mesmas entradas, com séries temporais geradas de tamanho igual a trinta mil. Com isso foram obtidas duas distribuições de probabilidade, para testar a acurácia foram calculadas as entropias de cada uma das distribuições separadamente e depois comparadas, era mais conveniente comparar as entropias pois deveriam ser iguais se as distribuições de probabilidade fossem iguais, e por cada uma se tratar de um único valor numérico foi possível utilizar o LRE (\textit{Log-Relative Error})~\cite{almiron2010numerical}, que consiste no seguinte:
-%%% ACF Escreva em LaTeX
-\includegraphics[width=0.50\columnwidth]{LRE1.png}
+
+$$ LRE(x,c)
+= \left\{\begin{array}{rll}
+- \log_{10} \frac{|x-c|}{|c|} & \hbox{se} & c \neq 0 \\
+- \log_{10} |x| & \hbox{caso contrário}
+\end{array}\right.$$
 
 Onde c é o valor verdadeiro e x é o valor a ser comparado, a função nos retornará a quantidade de dígitos significantes que foram corretamente computados. Em cada uma das execuções o resultado obtido foi o seguinte:
 
@@ -175,16 +180,33 @@ Onde a variável time.taken nos diz exatamente o tempo levado para executar a fu
 
 \includegraphics[width=0.80\columnwidth]{Code.png}
 
-Abaixo segue uma tabela, baseada numa amostra obtida a partir de dez distintas execuções dos programas, comparando os tempos de execução das implementações do Complete Case em cada linguagem:
+Abaixo segue uma tabela, baseada numa amostra obtida a partir de dez distintas execuções dos programas, comparando os tempos de execução das implementações do Complete Case em cada linguagem:\\
 
-%%% ACF Faça a tabela em LaTeX; use o pacote siuntx
-\includegraphics[width=0.80\columnwidth]{RxCtable1.png}\\
+
+\begin{tabular}{|c|c|c|c|}
+     \hline
+      & Valor mínimo & Valor máximo & Média\\
+      \hline
+      R & \SI{31.67778}{\second} & \SI{34.97058}{\second} & \SI{33.05312}{\second}\\
+      \hline
+      C & \SI{0.321858}{\second} & \SI{0.3651605}{\second} & \SI{0.3360521}{\second}\\
+      \hline
+\end{tabular}\\
+
 
 Ou seja, tendo como base a média de tempo, é fácil ver que a versão em C é aproximadamente cem vezes mais veloz que a versão em R.
-Quanto à implementação da Time Ordered, analisando também sua velocidade em ambas as versões, com o mesmo número de amostragem, obtém-se a seguinte tabela:
+Quanto à implementação da Time Ordered, analisando também sua velocidade em ambas as versões, com o mesmo número de amostragem, obtém-se a seguinte tabela:\\
 
-%%% ACF Faça a tabela em LaTeX; use o pacote siuntx
-\includegraphics[width=0.80\columnwidth]{RxCtable2.png}\\
+
+\begin{tabular}{|c|c|c|c|}
+     \hline
+      & Valor mínimo & Valor máximo & Média\\
+      \hline
+      R & \SI{129.3993}{\second} & \SI{142.9892}{\second} & \SI{135.4226}{\second}\\
+      \hline
+      C & \SI{1.806375}{\second} & \SI{1.903321}{\second} & \SI{1.849567}{\second}\\
+      \hline
+\end{tabular}\\
 
 Tal qual o Complete Case, vemos que a velocidade da versão em C do Time Ordered supera em muito a versão em R.
 Com isto, temos que os algoritmos sendo desenvolvidos em C serão mais vantajosos, pois possuem a mesma precisão mas com superior velocidade, o que facilitará suas aplicações no futuro.
